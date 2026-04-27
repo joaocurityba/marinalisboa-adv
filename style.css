@@ -25,3 +25,10 @@ body {
 .delay-200 { transition-delay: 200ms; }
 .delay-300 { transition-delay: 300ms; }
 .delay-500 { transition-delay: 500ms; }
+
+/* Zoom sutil aplicado à imagem do hero */
+.hero-photo {
+  transform: scale(1.05);
+  transform-origin: center;
+  will-change: transform;
+}
