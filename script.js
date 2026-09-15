@@ -24,17 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleScroll() {
     if (window.scrollY > 20) {
       header.classList.remove('bg-transparent', 'py-6');
-      header.classList.add('bg-[#fcfbf9]/95', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+      header.classList.add('bg-[#FBF8F4]/95', 'backdrop-blur-md', 'shadow-sm', 'py-4');
       
       logoText.classList.remove('text-white');
-      logoText.classList.add('text-primary-900');
+      logoText.classList.add('text-primary-950');
       
-      logoSubtext.classList.remove('text-accent-500');
+      logoSubtext.classList.remove('text-white', 'text-accent-500');
       logoSubtext.classList.add('text-accent-600');
 
       navLinks.forEach(link => {
-        link.classList.remove('text-stone-200', 'hover:text-white');
-        link.classList.add('text-stone-600', 'hover:text-primary-900');
+        link.classList.remove('text-stone-200', 'hover:text-white', 'text-white/90', 'hover:text-white');
+        link.classList.add('text-primary-950/90', 'hover:text-primary-950');
       });
 
       navCta.classList.remove('bg-white', 'text-primary-900', 'hover:bg-stone-100');
@@ -43,25 +43,25 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileMenuBtn.classList.remove('text-white');
       mobileMenuBtn.classList.add('text-primary-900');
     } else {
-      header.classList.remove('bg-[#fcfbf9]/95', 'backdrop-blur-md', 'shadow-sm', 'py-4');
-      header.classList.add('bg-transparent', 'py-6');
+      header.classList.remove('bg-transparent', 'py-6');
+      header.classList.add('bg-[#FBF8F4]/95', 'backdrop-blur-md', 'shadow-sm', 'py-4');
       
       logoText.classList.remove('text-primary-900');
-      logoText.classList.add('text-white');
+      logoText.classList.add('text-primary-950');
       
-      logoSubtext.classList.remove('text-accent-600');
-      logoSubtext.classList.add('text-accent-500');
+      logoSubtext.classList.remove('text-white');
+      logoSubtext.classList.add('text-accent-600');
 
       navLinks.forEach(link => {
-        link.classList.remove('text-stone-600', 'hover:text-primary-900');
-        link.classList.add('text-stone-200', 'hover:text-white');
+        link.classList.remove('text-stone-600', 'hover:text-primary-900', 'text-white/90', 'hover:text-white');
+        link.classList.add('text-primary-950/90', 'hover:text-primary-950');
       });
 
-      navCta.classList.remove('bg-primary-900', 'text-white', 'hover:bg-primary-800');
-      navCta.classList.add('bg-white', 'text-primary-900', 'hover:bg-stone-100');
+      navCta.classList.remove('bg-white', 'text-primary-900', 'hover:bg-stone-100');
+      navCta.classList.add('bg-primary-900', 'text-white', 'hover:bg-primary-800');
 
       mobileMenuBtn.classList.remove('text-primary-900');
-      mobileMenuBtn.classList.add('text-white');
+      mobileMenuBtn.classList.add('text-primary-900');
     }
   }
 
@@ -83,10 +83,38 @@ document.addEventListener('DOMContentLoaded', () => {
   mobileMenuBtn.addEventListener('click', toggleMobileMenu);
 
   mobileLinks.forEach(link => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', event => {
+      const targetId = link.getAttribute('href');
+      const isInternalSectionLink = targetId && targetId.startsWith('#');
+
+      if (isInternalSectionLink) {
+        event.preventDefault();
+      }
+
       mobileMenu.classList.add('hidden');
       menuIcon.classList.remove('hidden');
       closeIcon.classList.add('hidden');
+
+      if (!isInternalSectionLink) {
+        return;
+      }
+
+      const targetSection = document.querySelector(targetId);
+
+      if (!targetSection) {
+        return;
+      }
+
+      const mobileHeaderOffset = header.offsetHeight + 8;
+      const targetPosition = Math.max(
+        0,
+        targetSection.getBoundingClientRect().top + window.scrollY - mobileHeaderOffset
+      );
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
     });
   });
 
